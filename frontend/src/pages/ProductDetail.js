@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-export default function ProductDetails() {
+import {toast} from 'react-toastify';
+export default function ProductDetails({cartItems, setCartItems}) {
   const [product, setProduct] = useState(null);
+  const [qty, setQty] = useState(1);
   const { id } = useParams();
 
   useEffect(() => {
@@ -9,6 +11,15 @@ export default function ProductDetails() {
       .then((res) => res.json())
       .then((res) => setProduct(res.product));
   }, []);
+
+  function addToCart() {
+    const itemExist = cartItems.find((item) => item.product._id == product._id)
+    if (!itemExist) {
+        const newItem = {product, qty};
+        setCartItems((state) => [...state, newItem]);
+        toast.success("Cart Item added succesfully!")
+    }
+}
 
   return (
     product && (
@@ -42,7 +53,7 @@ export default function ProductDetails() {
               <input
                 type="number"
                 className="form-control count d-inline"
-                value="1"
+                value={qty}
                 readOnly
               />
 
@@ -50,6 +61,7 @@ export default function ProductDetails() {
             </div>
             <button
               type="button"
+              onClick={addToCart}
               id="cart_btn"
               className="btn btn-primary d-inline ml-4"
             >
