@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Search from "./Search";
 
-export default function Header({ cartItems }) {
+export default function Header({ cartItems, setCartItems }) {
   return (
     <nav className="navbar row">
       <div className="col-12 col-md-3">
